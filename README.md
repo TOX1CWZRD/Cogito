@@ -200,3 +200,6 @@ See [proxmox/README.md](./proxmox/README.md) for detailed instructions.
 - **Issues**: Report bugs or request features on [GitHub Issues](https://github.com/TOX1CWZRD/cogito/issues)
 - **Security**: Report security vulnerabilities via [GitHub Security Advisories](https://github.com/TOX1CWZRD/cogito/security/advisories) or see [SECURITY.md](SECURITY.md)
 
+- [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I01Q7OA8)
+
+
