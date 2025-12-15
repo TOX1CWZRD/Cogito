@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  cogito:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cogito
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      # JWT_SECRET must be set - use docker-compose.override.yml or environment variable
+      - JWT_SECRET=${JWT_SECRET:-CHANGE_THIS_SECRET}
+      - DB_PATH=/app/data/cogito.db
+      - BASE_URL=${BASE_URL:-http://localhost}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost}
+      # SMTP Configuration (optional)
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURE=${SMTP_SECURE:-false}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-}
+    volumes:
+      # Persist database
+      - ./data:/app/data
+      # Persist uploads
+      - ./uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    networks:
+      - cogito-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  nginx:
+    image: nginx:alpine
+    container_name: cogito-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Nginx configuration
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx-site.conf:/etc/nginx/conf.d/default.conf:ro
+      # SSL certificates (if using Let's Encrypt)
+      - ./docker/ssl:/etc/nginx/ssl:ro
+      # Serve static files from Cogito
+      - ./dist:/usr/share/nginx/html:ro
+      # Serve uploads
+      - ./uploads:/usr/share/nginx/html/uploads:ro
+    depends_on:
+      - cogito
+    networks:
+      - cogito-network
+
+networks:
+  cogito-network:
+    driver: bridge
+
+volumes:
+  cogito-data:
+  cogito-uploads:
+

@@ -1,0 +1,65 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+README.md
+*.md
+.dockerignore
+Dockerfile
+docker-compose*.yml
+docker/
+
+# Data directories (will be mounted as volumes)
+data/
+uploads/
+
+# Proxmox scripts
+proxmox/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+

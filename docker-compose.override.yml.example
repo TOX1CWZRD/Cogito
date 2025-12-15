@@ -1,0 +1,32 @@
+# Copy this file to docker-compose.override.yml and configure your settings
+# docker-compose.override.yml is automatically loaded by docker-compose
+# and is gitignored, so your secrets won't be committed
+
+version: '3.8'
+
+services:
+  cogito:
+    environment:
+      # REQUIRED: Generate a strong secret key
+      # Run: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      
+      # Your domain or IP
+      - BASE_URL=https://cogito.example.com
+      - ALLOWED_ORIGINS=https://cogito.example.com
+      
+      # SMTP Configuration (optional but recommended)
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_SECURE=false
+      - SMTP_USER=your-email@example.com
+      - SMTP_PASS=your-smtp-password
+      - SMTP_FROM=noreply@example.com
+      
+      # Optional: Client-side encryption key
+      - VITE_ENCRYPTION_KEY=your-encryption-key-here
+
+  nginx:
+    # If using custom domain, update the nginx config
+    # See docker/nginx-site.conf
+
